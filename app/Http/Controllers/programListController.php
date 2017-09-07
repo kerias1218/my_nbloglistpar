@@ -21,18 +21,17 @@ class programListController extends Controller
 
 	public function index(Request $request) {
 
-		//echo 123;
+		/*
+		 * http://l5.appkr.kr/lessons/09-query-builder.html
+		 */
 
-		//$list = DB::select('select * from program_list where 1=1');
-		$list = DB::table('program_list')->get();
-		dd($list);
+		//$list = DB::select('select * from program_list where 1=1');	//날쿼리 사용
+		$list = DB::table('program_list')->get()->toArray();		//쿼리 빌더 사용
 
-
-		$tasks = null;
 		// 블레이드 파일 , 변수
 		return view('programList/index', [
-			'tasks' => $tasks,
-			'task'  => '',
+			'list' => $list,
+
 		]);
 
 

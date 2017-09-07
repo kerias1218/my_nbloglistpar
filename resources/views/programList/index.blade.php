@@ -1,38 +1,34 @@
+
 @extends('master')
 
   @section('content')
     <div class="content-wrapper">
       <div class="container-fluid">
 
+
+
         <div class="well well-lg">
+          <button type="button" class="btn btn-primary btn-sm">등록</button>
           <table class="table table-hover">
             <thead>
             <tr>
-              <th>#</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Username</th>
+              <th width="20%">고유번호</th>
+              <th width="20%">요일</th>
+              <th width="40%">프로그램명</th>
+              <th width="20%">수정/삭제</th>
             </tr>
             </thead>
             <tbody>
+
+            @foreach($list as $k => $val)
             <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
+              <th scope="row">{{ $val->pl_idx }}</th>
+              <td>{{ $val->pl_day }}</td>
+              <td>{{ $val->pl_title }}</td>
+              <td>수정/삭제</td>
             </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
-              <td>the Bird</td>
-              <td>@twitter</td>
-            </tr>
+            @endforeach
+
             </tbody>
           </table>
         </div>
