@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>SB Admin - Start Bootstrap Template</title>
+    <meta name="description" content="나야">
+    <meta name="author" content="나야">
+    <title>라라벨5.5 로 만드는 내 프로젝트</title>
 
-    <!-- Bootstrap core CSS -->
+        <!-- Bootstrap core CSS -->
     <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
