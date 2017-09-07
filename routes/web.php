@@ -11,9 +11,14 @@
 |
 */
 
+
+
+
 Route::get('/', function () {
     //return view('welcome');
     return view('index');
 });
 
+
+route::get('/programList', 'programListController@index');
 
