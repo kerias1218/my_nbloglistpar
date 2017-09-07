@@ -9,14 +9,15 @@ use Illuminate\Http\Request;
 class programListController extends Controller
 {
 
-	/*
-	protected $tasks;
 
-	public function __construct(TaskRepository $tasks) {
-		$this->middleware('auth');
-		$this->tasks = $tasks;
+	public $program_list_table;
+
+	public function __construct() {
+		//$this->middleware('auth');
+		//$this->tasks = $tasks;
+		$this->program_list_table = 'program_list';
 	}
-	*/
+
 
 
 	public function index(Request $request) {
@@ -31,11 +32,66 @@ class programListController extends Controller
 		// 블레이드 파일 , 변수
 		return view('programList/index', [
 			'list' => $list,
-
 		]);
+	}
 
+	// update (ajax)
+	public function update(Request $request) {
 
 	}
+
+
+	// 새로 저장
+	public function insert(Request $request) {
+
+		$input = $request->input();
+
+
+		unset($input['_token']);
+
+		$isrs = DB::table($this->program_list_table)->where('pl_title', $input['pl_title'])->first();
+
+		if( $isrs !== null ) {
+			echo "<script>alert('이미존재합니다.')</script>";
+		}
+		else {
+			DB::table($this->program_list_table)->insert($input);
+		}
+
+
+		return redirect('programList');
+	}
+
+
+	// 아래 2개 비슷한 함수임 리팩ㅌ링 해야될것.
+	public function ajaxCheck(Request $request) {
+		$result = null;
+
+		$input = $request->input();
+
+		$isrs = DB::table($this->program_list_table)->where($input['field'], $input['value'])->first();
+		if( $isrs !== null ) {
+			$result['status'] = '10';
+			$result['msg'] = '이미 존재합니다.';
+		}
+		else {
+			$result['status'] = '1';
+			$result['msg'] = 'ok';
+		}
+
+		echo json_encode($result);
+	}
+
+	public function ajaxList(Request $request) {
+		$result = null;
+
+		$input = $request->input();
+		$result = DB::table($this->program_list_table)->where($input['field'], $input['value'])->first();
+		//print_r($result);
+		//exit;
+		echo json_encode($result);
+	}
+
 
 	/*
 

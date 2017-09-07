@@ -21,7 +21,7 @@
     <!-- Custom styles for this template -->
     <link href="./css/sb-admin.css" rel="stylesheet">
 
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">

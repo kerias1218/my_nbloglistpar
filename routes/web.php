@@ -21,4 +21,6 @@ Route::get('/', function () {
 
 
 route::get('/programList', 'programListController@index');
-
+route::post('/programListSave', 'programListController@insert');
+route::post('/ajaxCheck', 'programListController@ajaxCheck');
+route::post('/ajaxList', 'programListController@ajaxList');
