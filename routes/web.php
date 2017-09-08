@@ -24,3 +24,5 @@ route::get('/programList', 'programListController@index');
 route::post('/programListSave', 'programListController@insert');
 route::post('/ajaxCheck', 'programListController@ajaxCheck');
 route::post('/ajaxList', 'programListController@ajaxList');
+route::post('/ajaxUpdate', 'programListController@ajaxUpdate');
+route::post('/ajaxSortUpdate', 'programListController@ajaxSortUpdate');

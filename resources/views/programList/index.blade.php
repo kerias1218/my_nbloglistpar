@@ -7,21 +7,23 @@
 
 
 
+        <hr>
+
+
         <div class="well well-lg">
-          <button type="button" class="btn btn-primary btn-sm" data-target="#layerpop" data-toggle="modal">등록</button>
-          <table class="table table-hover">
+          <button type="button" class="btn btn-primary btn-sm programIns" data-toggle="modal">등록</button>
+          <table class="table table-hover" border="0">
             <thead>
             <tr>
-              <th width="20%">고유번호</th>
-              <th width="20%">요일</th>
-              <th width="40%">프로그램명</th>
-              <th width="20%">수정/삭제</th>
+              <th width="15%">고유번호</th>
+              <th width="15%">요일</th>
+              <th width="">프로그램명</th>
+              <th width="25%">수정/삭제</th>
             </tr>
             </thead>
-            <tbody>
-
+            <tbody id="plist">
             @foreach($list as $k => $val)
-            <tr>
+            <tr id="pl_order-{{ $val->pl_idx }}">
               <th scope="row">{{ $val->pl_idx }}</th>
               <td>{{ $val->pl_day }}</td>
               <td>{{ $val->pl_title }}</td>
@@ -32,9 +34,14 @@
             </tr>
             @endforeach
 
+            <tr><td colspan="10" align="center">
+                {{ $list->links('vendor/pagination/bootstrap-4') }}
+              </td></tr>
             </tbody>
           </table>
         </div>
+
+
 
 
 
@@ -64,6 +71,7 @@
                   <form id="_form" method="POST" action="/programListSave">
                     <input name="check_title" id="check_title" value="N" type="hidden">
                     <input name="mod" id="mod" value="N" type="hidden">
+                    <input name="pl_idx" id="pl_idx" type="hidden">
 
                     {{ csrf_field() }}
 
@@ -133,7 +141,10 @@
                     </div>
                     -->
 
-                    <a class="btn btn-primary btn-lg btn-block" id="btnProgramInsert">등 록</a>
+                    <div id="btnArea">
+                    <a class="btn btn-primary btn-lg btn-block" id="btnProgramInsert">등록/수정</a>
+                    </div>
+
                   </form>
 
                   <!--
@@ -167,9 +178,23 @@
 
     <script>
 
+      // 등록 클릭 (수정클릭후 등록 클릭하면 폼 내용이 들어가있음
+      $(".programIns").on("click", function() {
+        $("[name^=pl_]").each(function() {
+          var id = $(this).attr('id');
+          $("#layerpop #"+id).val('');
+        });
+
+        $("#mod").val('N');
+        $("#layerpop").modal();
+      });
+
+
       // 수정 클릭
       $(".programMod").on("click", function() {
+
         var pl_idx = $(this).attr("data-pl_idx");
+        $('#pl_idx').val(pl_idx);
         var params = 'field=pl_idx&value='+pl_idx+'&_token={{ csrf_token() }}';
         var url = '/ajaxList';
 
@@ -199,16 +224,44 @@
         $("#layerpop").modal();
       });
 
-      // 저장 클릭
+
+      // 저장/수정버튼 클릭
       $("#btnProgramInsert").on("click",function() {
-        var data = $("#_form").serialize();
 
-        if( $('#mod').val() == 'N' && $("#check_title").val() == 'N' ) {
-          alert('이미 등록되어있는 방송입니다.');
-          return false;
+        if( $("#_form #mod").val() =='Y' ) { // 수정클릭
+
+          var params = $("#_form").serialize();
+          var url = '/ajaxUpdate';
+
+          $.ajax({
+            url: url
+            , type: 'POST'
+            , data: params
+            , cache: false
+            //, dataType: 'json'
+            , async: false
+            , success: function (rdata) {
+
+              console.log(rdata);
+              location.reload();
+
+            }
+            , error: function (result) {
+              alert("작업 실패 : " + result);
+            }
+          });
+
+
         }
+        else {
 
-        $("#_form").submit();
+          if ($('#mod').val() == 'N' && $("#check_title").val() == 'N') {
+            alert('이미 등록되어있는 방송입니다.');
+            return false;
+          }
+
+          $("#_form").submit();
+        }
 
         //$("#modal_close").click();
       });
@@ -258,6 +311,29 @@
 
 
 
+      //$('#plist').sortable();
+
+      //var sortableLinks = $("#plist");
+      //$(sortableLinks).sortable();
+      //var linkOrderData = $(sortableLinks).sortable('serialize');
+      //console.log(linkOrderData);
+
+
+        $('#plist').sortable({
+          axis: 'y',
+          stop: function (event, ui) {
+
+            var oData = $('#plist').sortable('serialize');
+            var params = oData+'&_token={{ csrf_token() }}';
+
+            $.ajax({
+              url: '/ajaxSortUpdate'
+             ,data: params
+             ,type: 'POST'
+
+             });
+          }
+        });
 
 
 
